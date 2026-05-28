@@ -13,7 +13,7 @@ import datetime as dt
 
 fyers = authentication.get_access_token()
 
-dict = "Parquet_Reports"
+# dict = "Parquet_Reports"
 
 
 class Dataframe():
@@ -35,6 +35,11 @@ class Dataframe():
 
                 response = fyers.history(data)
                 print("📊 Fyers Response:", response)
+
+                if isinstance(response, dict) and response.get("code") == 429:
+                    print("⚠️ Rate limit hit. Sleeping for 15 seconds...")
+                    time.sleep(15)
+                    
 
                 if response.get("s") != "ok":
                     # return {"status": "error", "message": response}

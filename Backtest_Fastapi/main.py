@@ -11,7 +11,7 @@ import uvicorn
 import json
 import os
 from basic_data.dataframe import Dataframe
-from bson import ObjectId
+# from bson import ObjectId
 from Database.db import get_db
 from Database.model import User
 from Database.schemas import UserCreate, UserLogin, UserResponse
@@ -21,7 +21,8 @@ from auth.jwt_handler import create_access_token
 from sqlalchemy.orm import Session
 
 
-dict = "CSV_Reports"
+
+folder_path  = "CSV_Reports"
 Dic_file_path = "Parquet_Reports"
 # --------------------- CONFIGURATION ---------------------
 grant_type = "authorization_code"
@@ -110,12 +111,15 @@ async def get_history(
         candles = (end_epoch - start_epoch) // interval_seconds
 
         if candles > 100:
+            print(f"⚠️ Requested {candles} candles, which exceeds the API limit of {MAX_CANDLES}. Fetching in chunks...")
 
             CHUNK_SECONDS = interval_seconds * MAX_CANDLES
             current_start = start_epoch
 
             filename = f"{symbol}_5min_{now}.csv"
-            full_path = os.path.join(dict, filename)   # ✅ FIXED
+            full_path = os.path.join(folder_path, filename)   # ✅ FIXED
+            print(full_path,"full_path")  # Ensure directory exists
+            os.makedirs(os.path.dirname(full_path), exist_ok=True)
 
             while current_start < end_epoch:
 
@@ -149,7 +153,9 @@ async def get_history(
 
                 current_start = current_end
                 
-                time.sleep(0.5)  # To avoid hitting rate limits           
+                time.sleep(1.5)
+
+                # To avoid hitting rate limits           
 
         return {"status": "ok"}
 

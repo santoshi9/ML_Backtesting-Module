@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+.venv/
+venv/
+
+# VS Code
+.vscode/
+
+# Node Modules
+node_modules/
+
+# Environment Variables
+.env
+
+# Token Files
+access_token.txt
+auth_refresh_tokens.csv
+
+# Logs
+*.log
+
+# CSV
+*.csv
+
+# OS Files
+.DS_Store
+Thumbs.db
